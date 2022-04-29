@@ -141,3 +141,4 @@ const recentContents = [
       url: 'https://1boon.kakao.com/erbook/60766a138dee770a410e0512',
     },
   ];
+  export default recentContents;

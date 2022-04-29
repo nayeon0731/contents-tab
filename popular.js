@@ -211,3 +211,4 @@ const popularContents = [
       url: 'https://1boon.kakao.com/theable/giveup',
     },
   ];
+  export default popularContents;
