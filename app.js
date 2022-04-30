@@ -14,6 +14,9 @@ JS 함수화
 const $list = document.getElementById('list');
 var tabs = document.getElementsByTagName('li');
 
+const $loading = document.getElementsByClassName("glyphicon glyphicon-refresh")[0].parentNode;
+$loading.style.visibility = "hidden";
+
 const $content_list = document.createElement("div");
 $content_list.className = "content_list";
 $list.appendChild($content_list);
@@ -22,8 +25,6 @@ var data;
 tabClick()
 
 function makeContent(data) {
-    var c = document.getElementsByClassName('content_list');
-    c[0].innerHTML = '';
     for(var i=0; i<data.length; i++) {
         const $content = document.createElement("div");
         $content.className = "content";
@@ -83,9 +84,19 @@ function tabClick() {
             for(var j=0; j<tabs.length; j++){
                 if(tabs[j].className === 'active') {
                     console.log(j);
-                    showList(j);
+                    loadingContents(j);
                 }
             }
         })
     }
+}
+
+function loadingContents(j) {
+    var c = document.getElementsByClassName('content_list');
+    c[0].innerHTML = '';
+    $loading.style.visibility = "visible";
+    setTimeout(function() {
+        $loading.style.visibility = "hidden";
+        showList(j);
+      }, 1000);
 }
