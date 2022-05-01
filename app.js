@@ -3,7 +3,6 @@ import viewContents from './view.js';
 import popularContents from './popular.js';
 /*
 API에서 제목, 링크, 이미지, CP 를 적절히 표시
-처음 10개만 보여주고 더보기 클릭이 남은 10개 보여주기 (로딩이미지 효과도 구현)
 JS 에러 발생하면 안됨
 JS 네이티브 함수 사용, 최신 DOM 사용하여 구현
 ES6 사용
@@ -21,9 +20,10 @@ $content_list.className = "content_list";
 $list.prepend($content_list);
 var data;
 var contentNum = 10;
-var selectedTab;
+var selectedTab = 0;
 
-tabClick()
+tabClick();
+showList(selectedTab);
 
 $moreBtn.addEventListener("click", (e) => {
     contentNum += 10;
