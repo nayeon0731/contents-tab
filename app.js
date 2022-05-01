@@ -2,8 +2,6 @@ import recentContents from './recent.js';
 import viewContents from './view.js';
 import popularContents from './popular.js';
 /*
-가져온 데이터를 id=list 에 노출
-로딩이미지 효과: 각 콘텐츠 노출시에 로딩이미지를 1초 노출후에 콘텐츠 노출
 API에서 제목, 링크, 이미지, CP 를 적절히 표시
 처음 10개만 보여주고 더보기 클릭이 남은 10개 보여주기 (로딩이미지 효과도 구현)
 JS 에러 발생하면 안됨
@@ -14,18 +12,29 @@ JS 함수화
 const $list = document.getElementById('list');
 var tabs = document.getElementsByTagName('li');
 
+const $moreBtn = document.getElementsByClassName("btn btn-default")[0].parentNode;
 const $loading = document.getElementsByClassName("glyphicon glyphicon-refresh")[0].parentNode;
 $loading.style.visibility = "hidden";
 
 const $content_list = document.createElement("div");
 $content_list.className = "content_list";
-$list.appendChild($content_list);
+$list.prepend($content_list);
 var data;
+var contentNum = 10;
+var selectedTab;
 
 tabClick()
 
+$moreBtn.addEventListener("click", (e) => {
+    contentNum += 10;
+    loadingContents();
+})
+
 function makeContent(data) {
-    for(var i=0; i<data.length; i++) {
+    for(var i=contentNum-10; i<contentNum; i++) {
+        if(i >= data.length) {
+            break;
+        }
         const $content = document.createElement("div");
         $content.className = "content";
         $content_list.appendChild($content);
@@ -70,6 +79,8 @@ function showList(indexNum) {
 
 //탭 초기화
 function initTab() {
+    var c = document.getElementsByClassName('content_list');
+    c[0].innerHTML = '';
     for(var i=0; i<tabs.length; i++) {
         tabs[i].className = ''
     }
@@ -77,26 +88,26 @@ function initTab() {
 
 function tabClick() {
     for(var i=0; i<tabs.length; i++) {
-        console.log(tabs.length)
         tabs[i].addEventListener("click", (e) => {
             initTab();
+            contentNum = 10;
             e.currentTarget.className = 'active'
             for(var j=0; j<tabs.length; j++){
                 if(tabs[j].className === 'active') {
+                    selectedTab = j;
                     console.log(j);
-                    loadingContents(j);
+                    loadingContents();
                 }
             }
         })
     }
 }
 
-function loadingContents(j) {
-    var c = document.getElementsByClassName('content_list');
-    c[0].innerHTML = '';
+function loadingContents() {
     $loading.style.visibility = "visible";
     setTimeout(function() {
         $loading.style.visibility = "hidden";
-        showList(j);
+        showList(selectedTab);
       }, 1000);
 }
+
