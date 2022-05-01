@@ -1,13 +1,7 @@
 import recentContents from './recent.js';
 import viewContents from './view.js';
 import popularContents from './popular.js';
-/*
-API에서 제목, 링크, 이미지, CP 를 적절히 표시
-JS 에러 발생하면 안됨
-JS 네이티브 함수 사용, 최신 DOM 사용하여 구현
-ES6 사용
-JS 함수화
-*/
+
 const $list = document.getElementById('list');
 const $tabs = document.getElementsByTagName('li');
 const $moreBtn = document.getElementsByClassName("btn btn-default")[0].parentNode;
@@ -18,7 +12,7 @@ const $content_list = document.createElement("div");
 $content_list.className = "content_list";
 $list.prepend($content_list);
 
-var data;
+var data, tabNum;
 var contentNum = 10;
 var selectedTab = 0;
 
@@ -29,6 +23,51 @@ $moreBtn.addEventListener("click", (e) => {
     contentNum += 10;
     loadingContents();
 })
+
+function tabClick() {
+    for(var i=0; i<$tabs.length; i++) {
+        $tabs[i].addEventListener("click", (e) => {
+            initTab();
+            contentNum = 10;
+            e.currentTarget.className = 'active'
+            for(tabNum=0; tabNum<$tabs.length; tabNum++){
+                if($tabs[tabNum].className === 'active') {
+                    selectedTab = tabNum;
+                    loadingContents();
+                }
+            }
+        })
+    }
+}
+
+function initTab() {
+    var c = document.getElementsByClassName('content_list');
+    c[0].innerHTML = '';
+    for(var i=0; i<$tabs.length; i++) {
+        $tabs[i].className = ''
+    }
+}
+
+function loadingContents() {
+    $loading.style.visibility = "visible";
+    setTimeout(function() {
+        $loading.style.visibility = "hidden";
+        showList(selectedTab);
+      }, 1000);
+}
+
+function showList(indexNum) {
+    if(indexNum === 0) {
+        data = recentContents;
+        makeContent(data);
+    } else if(indexNum === 1) {
+        data = viewContents
+        makeContent(data);
+    } else {
+        data = popularContents
+        makeContent(data);
+    }
+}
 
 function makeContent(data) {
     for(var i=contentNum-10; i<contentNum; i++) {
@@ -62,52 +101,3 @@ function makeContent(data) {
         $link.appendChild($cp);
     }
 }
-
-//리스트 보여주는 함수
-function showList(indexNum) {
-    if(indexNum === 0) {
-        data = recentContents;
-        makeContent(data);
-    } else if(indexNum === 1) {
-        data = viewContents
-        makeContent(data);
-    } else {
-        data = popularContents
-        makeContent(data);
-    }
-}
-
-//탭 초기화
-function initTab() {
-    var c = document.getElementsByClassName('content_list');
-    c[0].innerHTML = '';
-    for(var i=0; i<$tabs.length; i++) {
-        $tabs[i].className = ''
-    }
-}
-
-function tabClick() {
-    for(var i=0; i<$tabs.length; i++) {
-        $tabs[i].addEventListener("click", (e) => {
-            initTab();
-            contentNum = 10;
-            e.currentTarget.className = 'active'
-            for(var j=0; j<$tabs.length; j++){
-                if($tabs[j].className === 'active') {
-                    selectedTab = j;
-                    console.log(j);
-                    loadingContents();
-                }
-            }
-        })
-    }
-}
-
-function loadingContents() {
-    $loading.style.visibility = "visible";
-    setTimeout(function() {
-        $loading.style.visibility = "hidden";
-        showList(selectedTab);
-      }, 1000);
-}
-
