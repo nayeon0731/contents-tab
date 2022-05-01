@@ -9,8 +9,7 @@ ES6 사용
 JS 함수화
 */
 const $list = document.getElementById('list');
-var tabs = document.getElementsByTagName('li');
-
+const $tabs = document.getElementsByTagName('li');
 const $moreBtn = document.getElementsByClassName("btn btn-default")[0].parentNode;
 const $loading = document.getElementsByClassName("glyphicon glyphicon-refresh")[0].parentNode;
 $loading.style.visibility = "hidden";
@@ -18,6 +17,7 @@ $loading.style.visibility = "hidden";
 const $content_list = document.createElement("div");
 $content_list.className = "content_list";
 $list.prepend($content_list);
+
 var data;
 var contentNum = 10;
 var selectedTab = 0;
@@ -81,19 +81,19 @@ function showList(indexNum) {
 function initTab() {
     var c = document.getElementsByClassName('content_list');
     c[0].innerHTML = '';
-    for(var i=0; i<tabs.length; i++) {
-        tabs[i].className = ''
+    for(var i=0; i<$tabs.length; i++) {
+        $tabs[i].className = ''
     }
 }
 
 function tabClick() {
-    for(var i=0; i<tabs.length; i++) {
-        tabs[i].addEventListener("click", (e) => {
+    for(var i=0; i<$tabs.length; i++) {
+        $tabs[i].addEventListener("click", (e) => {
             initTab();
             contentNum = 10;
             e.currentTarget.className = 'active'
-            for(var j=0; j<tabs.length; j++){
-                if(tabs[j].className === 'active') {
+            for(var j=0; j<$tabs.length; j++){
+                if($tabs[j].className === 'active') {
                     selectedTab = j;
                     console.log(j);
                     loadingContents();
